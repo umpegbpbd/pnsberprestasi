@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Sertifikat PNS Berprestasi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Sistem Upload Dokumen</p>
+        <h1>Upload Sertifikat PNS Berprestasi</h1>
+        <p class="subtitle">
+          Dibuktikan dengan Sertifikat atau SK.
+        </p>
+      </div>
+    </header>
+
+    <div id="alertContainer" class="alert-container"></div>
+
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2>Form Upload</h2>
+          <p>Isi data dengan lengkap. File akan diunggah ke repository GitHub.</p>
+        </div>
+      </div>
+
+      <form id="uploadForm" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="namaPegawai">Nama Pegawai <span class="required">*</span></label>
+            <select id="namaPegawai" name="namaPegawai">
+              <option value="">-- Pilih Pegawai --</option>
+            </select>
+            <small class="field-error" id="error-namaPegawai"></small>
+          </div>
+
+          <div class="form-group">
+            <label for="jenisPenghargaan">Jenis Penghargaan <span class="required">*</span></label>
+            <input type="text" id="jenisPenghargaan" name="jenisPenghargaan" placeholder="Contoh: ASN Berprestasi" />
+            <small class="field-error" id="error-jenisPenghargaan"></small>
+          </div>
+
+          <div class="form-group">
+            <label for="lingkupPenghargaan">Lingkup Penghargaan <span class="required">*</span></label>
+            <select id="lingkupPenghargaan" name="lingkupPenghargaan">
+              <option value="">-- Pilih Lingkup --</option>
+              <option value="UNIT KERJA">UNIT KERJA</option>
+              <option value="INSTANSI">INSTANSI</option>
+              <option value="KABUPATEN">KABUPATEN</option>
+              <option value="PROVINSI">PROVINSI</option>
+              <option value="NASIONAL">NASIONAL</option>
+              <option value="LAINNYA">LAINNYA</option>
+            </select>
+            <small class="field-error" id="error-lingkupPenghargaan"></small>
+          </div>
+
+          <div class="form-group">
+            <label for="nomorPiagam">Nomor Piagam / Sertifikat / Apresiasi <span class="required">*</span></label>
+            <input type="text" id="nomorPiagam" name="nomorPiagam" placeholder="Masukkan nomor dokumen" />
+            <small class="field-error" id="error-nomorPiagam"></small>
+          </div>
+
+          <div class="form-group">
+            <label for="tanggalPiagam">Tanggal Piagam / Sertifikat / Apresiasi <span class="required">*</span></label>
+            <input type="date" id="tanggalPiagam" name="tanggalPiagam" />
+            <small class="field-error" id="error-tanggalPiagam"></small>
+          </div>
+
+          <div class="form-group">
+            <label for="tahunPerolehan">Tahun Perolehan <span class="required">*</span></label>
+            <input type="number" id="tahunPerolehan" name="tahunPerolehan" min="1900" max="2100" placeholder="Contoh: 2026" />
+            <small class="field-error" id="error-tahunPerolehan"></small>
+          </div>
+
+          <div class="form-group form-group-full">
+            <label for="fileSertifikat">Upload Sertifikat / Piagam <span class="required">*</span></label>
+            <input
+              type="file"
+              id="fileSertifikat"
+              name="fileSertifikat"
+              accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+            />
+            <small class="field-help">Format: PDF, JPG, JPEG, PNG. Maksimal 5 MB.</small>
+            <small class="field-error" id="error-fileSertifikat"></small>
+          </div>
+        </div>
+
+        <div class="file-preview-card" id="filePreviewCard">
+          <div class="preview-top">
+            <div>
+              <h3>Preview File</h3>
+              <p id="selectedFileMeta" class="selected-file-meta">Belum ada file dipilih.</p>
+            </div>
+            <button type="button" id="clearFileBtn" class="btn btn-secondary btn-sm hidden">Hapus File Pilihan</button>
+          </div>
+
+          <div class="preview-body">
+            <img id="imagePreview" class="preview-image hidden" alt="Preview gambar file terpilih" />
+            <div id="pdfPreviewMessage" class="pdf-preview hidden">File PDF siap diupload.</div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="submitBtn" class="btn btn-primary">Simpan / Upload</button>
+          <button type="button" id="resetBtn" class="btn btn-secondary">Reset Form</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2>Pencarian & Filter</h2>
+          <p>Saring data upload agar tidak tenggelam dalam tabel.</p>
+        </div>
+      </div>
+
+      <div class="filter-grid">
+        <div class="form-group">
+          <label for="searchInput">Cari Nama Pegawai</label>
+          <input type="text" id="searchInput" placeholder="Ketik nama pegawai..." />
+        </div>
+
+        <div class="form-group">
+          <label for="yearFilter">Filter Tahun</label>
+          <select id="yearFilter">
+            <option value="">Semua Tahun</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="lingkupFilter">Filter Lingkup</label>
+          <select id="lingkupFilter">
+            <option value="">Semua Lingkup</option>
+            <option value="UNIT KERJA">UNIT KERJA</option>
+            <option value="INSTANSI">INSTANSI</option>
+            <option value="KABUPATEN">KABUPATEN</option>
+            <option value="PROVINSI">PROVINSI</option>
+            <option value="NASIONAL">NASIONAL</option>
+            <option value="LAINNYA">LAINNYA</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button type="button" id="resetFilterBtn" class="btn btn-secondary">Reset Filter</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card table-card">
+      <div class="card-header">
+        <div>
+          <h2>Daftar Upload</h2>
+          <p>Data terbaru akan tampil di urutan paling atas.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Pegawai</th>
+              <th>Jenis Penghargaan</th>
+              <th>Lingkup</th>
+              <th>Nomor Piagam</th>
+              <th>Tanggal</th>
+              <th>Tahun</th>
+              <th>Nama File</th>
+              <th>Waktu Upload</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="dataTableBody"></tbody>
+        </table>
+      </div>
+
+      <div id="emptyState" class="empty-state">
+        Belum ada data upload.
+      </div>
+    </section>
+  </div>
+
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <p id="loadingText">Memproses...</p>
+    </div>
+  </div>
+
+  <script src="employees.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
